@@ -8,6 +8,7 @@ const ByteArray = imports.byteArray;
 
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 const getLogger = Me.imports.extension.getLogger;
+const Config = imports.misc.config;
 
 const Entry = new Lang.Class({
     Name: 'Entry',
@@ -65,7 +66,7 @@ const DerivedEntry = new Lang.Class({
     createInstance: function(addit_prop) {
         let cls = type_map[this.base];
         if(!cls) throw new Error("Bad base class.");
-        if(cls.createInstance) throw new Error("Not allowed to derive from dervied types");
+        if(cls.createInstance) throw new Error("Not allowed to derive from derived types");
 
         for(let rp in this.prop)
             addit_prop[rp] = this.prop[rp];
@@ -149,7 +150,7 @@ function realPipeOpen(cmdline, env, callback) {
 
     getLogger().info("Spawned " + cmdline);
 
-    // log(`Spawning ${cmdline}`);   TODO: BEN
+    // log(`${Me.metadata.name}: Spawning ${cmdline}`);   TODO: BEN
     return proc.get_identifier();
 }
 
@@ -301,6 +302,7 @@ const LauncherEntry = new Lang.Class({
     },
 });
 
+
 const SubMenuEntry = new Lang.Class({
     Name: 'SubMenuEntry',
     Extends: Entry,
@@ -401,6 +403,19 @@ var Loader = new Lang.Class({
     Name: 'ConfigLoader',
 
     _init: function(filename) {
+				let gnomeVersion = Config.PACKAGE_VERSION.split('.')
+				if (gnomeVersion[0] < 40 || gnomeVersion[0] > 43)
+					throw new Error("Incompatible with Gnome Version "+gnomeVersion)
+					
+				if (gnomeVersion[0] >= 43) {
+					// Default for Gnome 43 and subsequent, where gedit was removed and replaced with gnome-text-editor:
+					this.editorExecutable = "gnome-text-editor";
+				}
+        else {
+					this.editorExecutable = "gedit";
+				}
+				this.terminalExecutable = "gnome-terminal"; // Version-agnostic default.
+				
         if(filename)
             this.loadConfig(filename);
     },
@@ -429,12 +444,10 @@ var Loader = new Lang.Class({
             command_off: 'tmux kill-session -t ${session}',
             detector: 'tmux has -t "${session}" 2>/dev/null && echo yes',
         });
-
-        /*
-         * Refer to README file for detailed config file format.
-         */
-        this.entries = []; // CAUTION: remove all entries.
-
+				
+        //Refer to README file for detailed config file format.
+        this.entries = [];
+        
         let config_parser = new Json.Parser();
         config_parser.load_from_file(filename);
 
@@ -453,6 +466,12 @@ var Loader = new Lang.Class({
             let entry_prop = conf.entries[conf_i];
             this.entries.push(createEntry(entry_prop));
         }
+       if (conf.editorExecutable != undefined) {
+				 this.editorExecutable = conf.editorExecutable;
+			 }
+			 if (conf.terminalExecutable != undefined) {
+        this.terminalExecutable = conf.terminalExecutable;
+			}
     },
 
 
@@ -460,14 +479,16 @@ var Loader = new Lang.Class({
         // Write default config
         const PERMISSIONS_MODE = 0o640;
         const jsonString = JSON.stringify({
-            "_homepage_": "https://github.com/andreabenini/gnome-plugin.custom-menu-panel",
-            "_examples_": "https://github.com/andreabenini/gnome-plugin.custom-menu-panel/tree/main/examples",
-            "entries": [ {
-                "type": "launcher",
-                "title": "Edit menu",
-                "command": "gedit $HOME/.entries.json"
-            } ]
-        }, null, 4);
+					"_homepage_": "https://github.com/andreabenini/gnome-plugin.custom-menu-panel",
+          "_examples_": "https://github.com/andreabenini/gnome-plugin.custom-menu-panel/tree/main/examples",
+          "editorExecutable": this.editorExecutable,
+          "terminalExecutable": "gnome-terminal",
+          "entries": [ {
+						"type": "launcher",
+						"title": "Example: List Home Directory in Terminal",
+						"command": "gnome-terminal -- bash -i -c 'cd ~/; command ls -aF --color=auto; bash'"
+					} ]
+        }, null, 1);
         let fileConfig = Gio.File.new_for_path(filename);
         if (GLib.mkdir_with_parents(fileConfig.get_parent().get_path(), PERMISSIONS_MODE) === 0) {
             fileConfig.replace_contents(jsonString, null, false, Gio.FileCreateFlags.REPLACE_DESTINATION, null);
@@ -479,5 +500,5 @@ var Loader = new Lang.Class({
             Main.notify(_('Cannot create and load file: '+filename));
         }
     }, /**/
-
+		
 });

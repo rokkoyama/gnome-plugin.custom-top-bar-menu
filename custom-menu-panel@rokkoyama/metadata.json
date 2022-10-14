@@ -1,0 +1,10 @@
+{
+  "description": "Quick custom menu for launching your favorite applications",
+  "name": "custom-menu-panel",
+  "shell-version": [
+    "40", "41", "42", "43"
+  ],
+  "url": "https://github.com/rokkoyama/gnome-plugin.custom-menu-panel",
+  "uuid": "custom-menu-panel@rokkoyama",
+  "version": 5.1
+}
