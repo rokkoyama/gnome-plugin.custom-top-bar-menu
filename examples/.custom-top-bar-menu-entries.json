@@ -1,5 +1,5 @@
 {
-	"_homepage_": "https://github.com/rokkoyama/gnome-plugin.custom-menu-panel",
+	"_homepage_": "https://github.com/rokkoyama/gnome-plugin.custom-top-bar-menu",
 	"editorExecutable": "gedit",
 	"terminalExecutable": "gnome-terminal",
   "entries": [

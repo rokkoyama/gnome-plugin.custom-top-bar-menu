@@ -1,5 +1,5 @@
-# Gnome Custom Menu Panel
-Custom menu on Gnome Top Bar with your favorite program shortcuts.
+# Gnome Extension - Custom Top Bar Menu
+Custom menu on Gnome top bar with your favorite program shortcuts.
 License: GPL v3
 
 This expands upon previous GPL works listed below in the predecessors section by adding:

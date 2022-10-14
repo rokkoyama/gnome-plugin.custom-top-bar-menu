@@ -479,8 +479,8 @@ var Loader = new Lang.Class({
         // Write default config
         const PERMISSIONS_MODE = 0o640;
         const jsonString = JSON.stringify({
-					"_homepage_": "https://github.com/andreabenini/gnome-plugin.custom-menu-panel",
-          "_examples_": "https://github.com/andreabenini/gnome-plugin.custom-menu-panel/tree/main/examples",
+					"_homepage_": "https://github.com/rokkoyama/gnome-plugin.custom-top-bar-menu",
+          "_examples_": "https://github.com/rokkoyama/gnome-plugin.custom-top-bar-menu/tree/main/examples",
           "editorExecutable": this.editorExecutable,
           "terminalExecutable": "gnome-terminal",
           "entries": [ {

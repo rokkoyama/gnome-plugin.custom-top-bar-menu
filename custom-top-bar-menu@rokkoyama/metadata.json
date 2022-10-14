@@ -4,7 +4,7 @@
   "shell-version": [
     "40", "41", "42", "43"
   ],
-  "url": "https://github.com/rokkoyama/gnome-plugin.custom-menu-panel",
-  "uuid": "custom-menu-panel@rokkoyama",
+  "url": "https://github.com/rokkoyama/gnome-plugin.custom-top-bar-menu",
+  "uuid": "custom-top-bar-menu@rokkoyama",
   "version": 5.1
 }

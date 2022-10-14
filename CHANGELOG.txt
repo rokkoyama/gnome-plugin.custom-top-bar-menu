@@ -1,6 +1,7 @@
 2022-10-14 v5.1
 				- Gnome 43 compatibility added.
 				- As gnome-text-editor has replaced gedit in Gnome 43, the default text editor is now defined as a function of Gnome version being >= 43 or less than 43. The derfault text editor is used during generation of a default configuration file, as well as used as an editor to spawn when the configuration file parsing error is detected. The user remains able to specify their preferred text editor in the confiugration file to deviate from the default.
+				- Renamed extension to custom-top-bar-menu from custom-menu-panel
 
 2022-09-24 v5
 				Resolved issues:

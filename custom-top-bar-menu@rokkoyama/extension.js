@@ -23,8 +23,8 @@
 
 /* exported init */
 
-const GETTEXT_DOMAIN = 'custom-menu-panel';
-const CONFIGURATION_FILE = '.entries.json';
+const GETTEXT_DOMAIN = 'custom-top-bar-menu';
+const CONFIGURATION_FILE = '.custom-top-bar-menu-entries.json';
 
 const { GObject, St } = imports.gi;
 
